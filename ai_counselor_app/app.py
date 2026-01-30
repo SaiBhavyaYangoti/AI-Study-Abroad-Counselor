@@ -67,22 +67,21 @@ def get_ai_response(prompt):
     payload = {
         "model": "mistralai/mistral-7b-instruct",
         "messages": [
-            {"role": "system", "content": "You are a helpful study abroad counselor."},
+            {"role": "system", "content": "You are a helpful AI study abroad counselor."},
             {"role": "user", "content": prompt}
         ]
     }
 
     response = requests.post(url, headers=headers, json=payload)
 
-    st.write("STATUS:", response.status_code)
-    st.write("RESPONSE:", response.text)
-
+    # ✅ Show real error inside app
     if response.status_code != 200:
-        return "⚠️ AI call failed."
+        st.error("❌ OpenRouter Request Failed")
+        st.write("Status Code:", response.status_code)
+        st.write("Response JSON:", response.json())
+        return "⚠️ AI is currently unavailable."
 
     return response.json()["choices"][0]["message"]["content"]
-
-
 
 # ---------------------------------
 # PDF CLEANING
@@ -479,6 +478,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
