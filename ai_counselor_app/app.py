@@ -81,9 +81,14 @@ def clean_text(txt):
 # ---------------------------------
 # LOAD UNIVERSITIES
 # ---------------------------------
+import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 @st.cache_data
 def load_universities():
-    return pd.read_csv("universities2.csv")
+    file_path = os.path.join(BASE_DIR, "universities2.csv")
+    return pd.read_csv(file_path)
 
 uni_df = load_universities()
 
@@ -482,5 +487,6 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
 
 
