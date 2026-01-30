@@ -60,6 +60,9 @@ def get_ai_response(prompt):
 
     api_key = st.secrets.get("GROQ_API_KEY")
 
+    if not api_key:
+        return "❌ GROQ_API_KEY missing in Secrets"
+
     url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
@@ -69,18 +72,18 @@ def get_ai_response(prompt):
 
     payload = {
         "model": "llama3-8b-8192",
-        "messages": [
-            {"role": "user", "content": prompt}
-        ]
+        "messages": [{"role": "user", "content": prompt}]
     }
 
     response = requests.post(url, headers=headers, json=payload)
 
-    # ✅ FORCE PRINT RESPONSE ALWAYS
-    st.write("STATUS:", response.status_code)
-    st.write("RAW RESPONSE:", response.text)
+    # ✅ RETURN FULL DEBUG TEXT
+    return f"""
+STATUS: {response.status_code}
 
-    return "STOP"
+RAW RESPONSE:
+{response.text}
+"""
 
 
 # ---------------------------------
@@ -478,6 +481,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
