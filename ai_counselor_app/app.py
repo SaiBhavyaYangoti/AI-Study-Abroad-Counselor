@@ -54,7 +54,7 @@ st.markdown("""
 # ---------------------------------
 # OPENROUTER API
 # ---------------------------------
-OPENROUTER_API_KEY = "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"
+OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
@@ -482,3 +482,4 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
