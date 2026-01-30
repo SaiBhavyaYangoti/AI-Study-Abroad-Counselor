@@ -71,31 +71,50 @@ The project uses modern AI and deployment tools:
 
 Follow these steps to run the application on your system.
 
-### 1. Clone the Repository
+# AI Study Abroad Counselor
 
+## Setup Instructions
+
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/ai-study-abroad-counselor.git
 cd ai-study-abroad-counselor
-2. Install Dependencies
+```
+
+### 2. Install Dependencies
+```bash
 pip install -r requirements.txt
-3. Configure the Groq API Key
+```
+
+### 3. Configure the Groq API Key
+
 Create a secrets file at:
+```
 .streamlit/secrets.toml
+```
+
 Add your Groq API key:
+```toml
 GROQ_API_KEY = "your_api_key_here"
-4. Run the Application
+```
+
+### 4. Run the Application
+```bash
 streamlit run ai_counselor_app/app.py
+```
 
 
-Deployment
+## Deployment
 The application is deployed using Streamlit Community Cloud.
-Deployment Steps:
+**Deployment Steps:**
 - Upload the project to GitHub
 - Connect the repository to Streamlit Cloud
 - Add the Groq API key securely using Streamlit Secrets
 - Launch the application publicly
 
-Future Enhancements
+
+## Future Enhancements
+
 Planned improvements include:
 - University comparison dashboard for shortlisted options
 - Integration of real QS/THE ranking datasets
