@@ -5,8 +5,6 @@ from openai import OpenAI
 from fpdf import FPDF
 from pypdf import PdfReader
 
-from streamlit_speech_recognition import speech_to_text
-
 # ---------------------------------
 # CONFIG
 # ---------------------------------
@@ -118,15 +116,6 @@ def calculate_match_score(cgpa, budget_value, uni):
     return min(score, 100)
 
 # ---------------------------------
-# OFFLINE WHISPER
-# ---------------------------------
-@st.cache_resource
-def load_whisper():
-    return WhisperModel("base")
-
-whisper_model = load_whisper()
-
-# ---------------------------------
 # HEADER
 # ---------------------------------
 st.markdown("""
@@ -194,9 +183,6 @@ elif menu == "Onboarding":
             }
             st.success("✅ Saved!")
 
-# ---------------------------------
-# UNIVERSITY EXPLORER UPDATED ✅
-# ---------------------------------
 # ---------------------------------
 # UNIVERSITY EXPLORER (FINAL VERSION ✅)
 # ---------------------------------
@@ -359,8 +345,9 @@ DOCUMENT:
             st.success("✅ Feedback Generated!")
             st.write(feedback)
 
+
 # ---------------------------------
-# AI CHATBOT (FINAL BROWSER VOICE VERSION ✅)
+# AI CHATBOT (TEXT ONLY ✅ Stable Deployment Version)
 # ---------------------------------
 elif menu == "AI Chatbot":
 
@@ -391,23 +378,10 @@ elif menu == "AI Chatbot":
 
     st.divider()
 
-    # ✅ Voice Input (Browser Speech Recognition)
-    st.markdown("🎤 Voice Input (Click below and speak)")
-
-    voice_text = speech_to_text(
-        language="en",
-        just_once=True,
-        use_container_width=True
-    )
-
-    # ✅ Normal Text Chat Input (Clears Automatically)
+    # ✅ Text Input Only (Works Like ChatGPT)
     user_text = st.chat_input("Message...")
 
-    # ✅ Combine Voice + Text (Text Priority)
-    final_question = user_text if user_text else voice_text
-
-    # ✅ If User Asked Something
-    if final_question:
+    if user_text:
 
         prompt = f"""
 Student Profile:
@@ -417,7 +391,7 @@ Shortlisted Universities:
 {st.session_state.shortlisted}
 
 User Question:
-{final_question}
+{user_text}
 
 Reply conversationally like ChatGPT in bullet points.
 """
@@ -425,11 +399,12 @@ Reply conversationally like ChatGPT in bullet points.
         response = get_ai_response(prompt)
 
         # ✅ Save Chat History
-        st.session_state.chat_history.append(("User", final_question))
+        st.session_state.chat_history.append(("User", user_text))
         st.session_state.chat_history.append(("AI", response))
 
-        # ✅ Refresh chat instantly
+        # ✅ Refresh Chat
         st.rerun()
+
 
 # ---------------------------------
 # EXPORT REPORT (FINAL CLEAN ✅)
@@ -479,6 +454,7 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
 
 
 
