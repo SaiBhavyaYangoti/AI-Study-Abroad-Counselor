@@ -71,10 +71,6 @@ The project uses modern AI and deployment tools:
 
 Follow these steps to run the application on your system.
 
-# AI Study Abroad Counselor
-
-## Setup Instructions
-
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/your-username/ai-study-abroad-counselor.git
@@ -106,6 +102,7 @@ streamlit run ai_counselor_app/app.py
 
 ## Deployment
 The application is deployed using Streamlit Community Cloud.
+
 **Deployment Steps:**
 - Upload the project to GitHub
 - Connect the repository to Streamlit Cloud
