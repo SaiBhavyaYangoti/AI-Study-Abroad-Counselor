@@ -1,0 +1,9 @@
+streamlit
+pandas
+openai
+fpdf
+pypdf
+streamlit-antd-components
+streamlit-mic-recorder
+faster-whisper
+torch
