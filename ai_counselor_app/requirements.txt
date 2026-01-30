@@ -5,4 +5,3 @@ fpdf
 pypdf
 streamlit-antd-components
 requests
-streamlit-speech-recognition
