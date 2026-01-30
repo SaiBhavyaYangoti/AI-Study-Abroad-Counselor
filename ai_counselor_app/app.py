@@ -58,10 +58,7 @@ import streamlit as st
 
 def get_ai_response(prompt):
 
-    api_key = st.secrets.get("GROQ_API_KEY")
-
-    if not api_key:
-        return "❌ GROQ_API_KEY missing in Secrets"
+    api_key = st.secrets["GROQ_API_KEY"]
 
     url = "https://api.groq.com/openai/v1/chat/completions"
 
@@ -71,19 +68,23 @@ def get_ai_response(prompt):
     }
 
     payload = {
-        "model": "llama3-8b-8192",
-        "messages": [{"role": "user", "content": prompt}]
+        # ✅ Updated Working Model
+        "model": "llama-3.1-8b-instant",
+
+        "messages": [
+            {"role": "system",
+             "content": "You are a friendly AI study abroad counselor. Reply like ChatGPT."},
+            {"role": "user", "content": prompt}
+        ]
     }
 
     response = requests.post(url, headers=headers, json=payload)
 
-    # ✅ RETURN FULL DEBUG TEXT
-    return f"""
-STATUS: {response.status_code}
+    if response.status_code != 200:
+        st.error("Groq API Error: " + response.text)
+        return "⚠️ AI is currently unavailable."
 
-RAW RESPONSE:
-{response.text}
-"""
+    return response.json()["choices"][0]["message"]["content"]
 
 
 # ---------------------------------
@@ -481,6 +482,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
