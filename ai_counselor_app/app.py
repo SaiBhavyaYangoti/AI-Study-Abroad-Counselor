@@ -5,8 +5,7 @@ from openai import OpenAI
 from fpdf import FPDF
 from pypdf import PdfReader
 
-from streamlit_mic_recorder import mic_recorder
-from faster_whisper import WhisperModel
+from streamlit_speech_recognition import speech_to_text
 
 # ---------------------------------
 # CONFIG
@@ -487,6 +486,7 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
 
 
 
