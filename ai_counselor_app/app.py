@@ -53,20 +53,20 @@ st.markdown("""
 # ---------------------------------
 import os
 
-OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY")
-
-if not OPENROUTER_API_KEY:
-    st.error("❌ OpenRouter API key missing. Add it in Streamlit Secrets.")
-    st.stop()
+OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
 
 client = OpenAI(
     base_url="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY
+    api_key=OPENROUTER_API_KEY,
+    default_headers={
+        "HTTP-Referer": "https://ai-study-abroad-counselor.streamlit.app",
+        "X-Title": "AI Study Abroad Counselor"
+    }
 )
 
 def get_ai_response(prompt):
     completion = client.chat.completions.create(
-        model="mistralai/mistral-7b-instruct",
+        model="mistralai/mistral-7b-instruct:free",
         messages=[
             {"role": "system",
              "content": "You are a friendly AI chatbot. Reply like ChatGPT, not emails."},
@@ -470,6 +470,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
