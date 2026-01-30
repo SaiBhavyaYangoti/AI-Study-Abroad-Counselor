@@ -360,18 +360,21 @@ DOCUMENT:
             st.write(feedback)
 
 # ---------------------------------
-# AI CHATBOT (FINAL CHATGPT STYLE ✅)
+# AI CHATBOT (FINAL BROWSER VOICE VERSION ✅)
 # ---------------------------------
 elif menu == "AI Chatbot":
 
     st.markdown("## 🤖 AI Chatbot")
+
+    # ✅ Greeting Message
     st.markdown(
         "<p style='font-size:18px; color:gray;'>Hi 👋 How can I help you today?</p>",
         unsafe_allow_html=True
     )
 
+    st.divider()
 
-    # ✅ Show Chat History
+    # ✅ Display Chat History
     for role, msg in st.session_state.chat_history:
 
         if role == "User":
@@ -382,39 +385,28 @@ elif menu == "AI Chatbot":
 
         else:
             st.markdown(
-                f"<div class='ai-msg'>", unsafe_allow_html=True
+                f"<div class='ai-msg'>{msg}</div>",
+                unsafe_allow_html=True
             )
-            st.markdown(msg)  # ✅ Bold formatting works
-            st.markdown("</div>", unsafe_allow_html=True)
 
     st.divider()
 
-    # ✅ Voice button row (same size)
-    col1, col2 = st.columns([9, 1])
+    # ✅ Voice Input (Browser Speech Recognition)
+    st.markdown("🎤 Voice Input (Click below and speak)")
 
-    with col1:
-        user_text = st.chat_input("Message...")  # ✅ Clears automatically
+    voice_text = speech_to_text(
+        language="en",
+        just_once=True,
+        use_container_width=True
+    )
 
-    with col2:
-        audio = mic_recorder(
-            start_prompt="🎙️",
-            stop_prompt="✅",
-            key="mic"
-        )
+    # ✅ Normal Text Chat Input (Clears Automatically)
+    user_text = st.chat_input("Message...")
 
-    # ✅ Voice transcription
-    voice_text = ""
-    if audio:
-        with open("voice.wav", "wb") as f:
-            f.write(audio["bytes"])
-
-        segments, _ = whisper_model.transcribe("voice.wav")
-        for seg in segments:
-            voice_text += seg.text
-
-    # ✅ Final input (Text has priority)
+    # ✅ Combine Voice + Text (Text Priority)
     final_question = user_text if user_text else voice_text
 
+    # ✅ If User Asked Something
     if final_question:
 
         prompt = f"""
@@ -427,15 +419,16 @@ Shortlisted Universities:
 User Question:
 {final_question}
 
-Reply conversationally like ChatGPT.
-Use bullets and bold properly.
+Reply conversationally like ChatGPT in bullet points.
 """
 
         response = get_ai_response(prompt)
 
+        # ✅ Save Chat History
         st.session_state.chat_history.append(("User", final_question))
         st.session_state.chat_history.append(("AI", response))
 
+        # ✅ Refresh chat instantly
         st.rerun()
 
 # ---------------------------------
@@ -486,6 +479,7 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
 
 
 
