@@ -147,11 +147,12 @@ if menu == "Home":
     <h2>🚀 Welcome</h2>
     ✅ AI-based University Recommendation<br>
     ✅ Shortlist + Compare Universities<br>
-    ✅ Voice + Text Chat Counseling<br>
+    ✅ AI chatbot Counseling<br>
     ✅ SOP + Resume AI Review<br>
     ✅ Download Final Report
     </div>
     """, unsafe_allow_html=True)
+    st.info("➡️ Next Step: Please go to **Onboarding** from the left sidebar to set up your student profile.")
 
 # ---------------------------------
 # ONBOARDING UPDATED ✅
@@ -182,6 +183,8 @@ elif menu == "Onboarding":
                 "course": course
             }
             st.success("✅ Saved!")
+            st.info("➡️ Next Step: Now go to **University Explorer** from the sidebar to see your top matches.")
+
 
 # ---------------------------------
 # UNIVERSITY EXPLORER (FINAL VERSION ✅)
@@ -293,6 +296,8 @@ elif menu == "University Explorer":
                     st.success(f"✅ {uni['name']} Shortlisted!")
 
             st.markdown("</div>", unsafe_allow_html=True)
+        
+        st.info("➡️ Next Step: You can now visit **SOP Review** or chat with the **AI Chatbot** from the sidebar.")
 
         # ✅ Shortlisted Universities Display
         st.markdown("### ✅ Shortlisted Universities")
@@ -344,6 +349,9 @@ DOCUMENT:
 
             st.success("✅ Feedback Generated!")
             st.write(feedback)
+
+            st.info("➡️ Next Step: After reviewing, go to **Export Report** from the sidebar to download your final counseling report.")
+
 
 
 # ---------------------------------
@@ -454,6 +462,8 @@ elif menu == "Export Report":
             st.download_button("📄 Download Report", f, file_name="final_report.pdf")
 
         st.success("✅ Final Report Generated Successfully!")
+
+        st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
 
 
 
