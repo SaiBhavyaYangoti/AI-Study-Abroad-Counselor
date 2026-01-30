@@ -76,13 +76,20 @@ git clone https://github.com/your-username/ai-study-abroad-counselor.git
 cd ai-study-abroad-counselor
 
 2. Install Dependencies
+```bash
 pip install -r requirements.txt
 
 3. Configure the Groq API Key
-Create a secrets file at: .streamlit/secrets.toml
-Add your Groq API key: GROQ_API_KEY="your_api_key_here"
+Create a secrets file at:
+```bash
+.streamlit/secrets.toml
+
+Add your Groq API key:
+```bash
+GROQ_API_KEY="your_api_key_here"
 
 4. Run the Application
+```bash
 streamlit run ai_counselor_app/app.py
 
 
