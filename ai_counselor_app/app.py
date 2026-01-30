@@ -53,11 +53,14 @@ st.markdown("""
 # ---------------------------------
 # OPENROUTER API
 # ---------------------------------
+import requests
+import streamlit as st
+
 def get_ai_response(prompt):
 
-    api_key = st.secrets["OPENROUTER_API_KEY"]
+    api_key = st.secrets["GROQ_API_KEY"]
 
-    url = "https://openrouter.ai/api/v1/chat/completions"
+    url = "https://api.groq.com/openai/v1/chat/completions"
 
     headers = {
         "Authorization": f"Bearer {api_key}",
@@ -65,9 +68,10 @@ def get_ai_response(prompt):
     }
 
     payload = {
-        "model": "openrouter/auto",
+        "model": "llama3-8b-8192",
         "messages": [
-            {"role": "system", "content": "You are a helpful AI study abroad counselor."},
+            {"role": "system",
+             "content": "You are a friendly AI study abroad counselor. Reply like ChatGPT."},
             {"role": "user", "content": prompt}
         ]
     }
@@ -75,8 +79,7 @@ def get_ai_response(prompt):
     response = requests.post(url, headers=headers, json=payload)
 
     if response.status_code != 200:
-        st.error("❌ OpenRouter Error: " + response.text)
-        return "⚠️ AI is currently unavailable."
+        return "❌ AI failed. Check Groq Key."
 
     return response.json()["choices"][0]["message"]["content"]
 
@@ -476,6 +479,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
