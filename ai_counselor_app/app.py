@@ -4,6 +4,8 @@ import streamlit_antd_components as sac
 from openai import OpenAI
 from fpdf import FPDF
 from pypdf import PdfReader
+import requests
+
 
 # ---------------------------------
 # CONFIG
@@ -51,29 +53,42 @@ st.markdown("""
 # ---------------------------------
 # OPENROUTER API
 # ---------------------------------
-import os
-
-OPENROUTER_API_KEY = st.secrets["OPENROUTER_API_KEY"]
-
-client = OpenAI(
-    base_url="https://openrouter.ai/api/v1",
-    api_key=OPENROUTER_API_KEY,
-    default_headers={
-        "HTTP-Referer": "https://ai-study-abroad-counselor.streamlit.app",
-        "X-Title": "AI Study Abroad Counselor"
-    }
-)
 
 def get_ai_response(prompt):
-    completion = client.chat.completions.create(
-        model="mistralai/mistral-7b-instruct:free",
-        messages=[
-            {"role": "system",
-             "content": "You are a friendly AI chatbot. Reply like ChatGPT, not emails."},
-            {"role": "user", "content": prompt}
+
+    api_key = st.secrets["OPENROUTER_API_KEY"]
+
+    url = "https://openrouter.ai/api/v1/chat/completions"
+
+    headers = {
+        "Authorization": f"Bearer {api_key}",
+        "HTTP-Referer": "https://ai-study-abroad-counselor.streamlit.app",
+        "X-Title": "AI Study Abroad Counselor",
+        "Content-Type": "application/json"
+    }
+
+    payload = {
+        "model": "mistralai/mistral-7b-instruct:free",
+        "messages": [
+            {
+                "role": "system",
+                "content": "You are a friendly AI chatbot. Reply like ChatGPT, not emails."
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
         ]
-    )
-    return completion.choices[0].message.content
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        st.error("OpenRouter API Error: " + response.text)
+        return "⚠️ AI is currently unavailable."
+
+    return response.json()["choices"][0]["message"]["content"]
+
 
 # ---------------------------------
 # PDF CLEANING
@@ -470,6 +485,7 @@ elif menu == "Export Report":
         st.success("✅ Final Report Generated Successfully!")
 
         st.info("✅ You have completed all steps! Feel free to return to **University Explorer** or **AI Chatbot** anytime.")
+
 
 
 
