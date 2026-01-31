@@ -73,7 +73,7 @@ Follow these steps to run the application on your system.
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/ai-study-abroad-counselor.git
+git clone https://github.com/SaiBhavyaYangoti/ai-study-abroad-counselor.git
 cd ai-study-abroad-counselor
 ```
 
